@@ -6,10 +6,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.im.cookgaloreapp.ui.components.NavigationGraph
 import com.im.cookgaloreapp.ui.theme.CookGaloreAppTheme
 import com.im.cookgaloreapp.utils.Screen
 
@@ -33,11 +35,16 @@ fun MainScreen(){
 
     val scaffoldState = rememberScaffoldState()
     val navController = rememberNavController()
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         scaffoldState = scaffoldState
     ) {
-
+        NavigationGraph(
+            navController = navController,
+            scaffoldState = scaffoldState,
+            scope = scope
+        )
     }
 
 }
