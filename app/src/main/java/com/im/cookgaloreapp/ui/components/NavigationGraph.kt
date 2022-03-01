@@ -4,12 +4,10 @@ import android.content.Context
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.im.cookgaloreapp.domain.Recipes.Recipes
 import com.im.cookgaloreapp.ui.screens.HomeScreen
@@ -17,7 +15,9 @@ import com.im.cookgaloreapp.ui.screens.bookmark.BookmarkScreen
 import com.im.cookgaloreapp.ui.screens.bookmark.FavouriteScreen
 import com.im.cookgaloreapp.ui.screens.home.HomeViewModel
 import com.im.cookgaloreapp.ui.screens.myrecipes.MyRecipesScreen
+import com.im.cookgaloreapp.ui.screens.myrecipes.MyRecipesViewModel
 import com.im.cookgaloreapp.ui.screens.recipe.RecipeDetailScreen
+import com.im.cookgaloreapp.ui.screens.recipe.RecipeViewModel
 import com.im.cookgaloreapp.utils.AssetParamType
 import com.im.cookgaloreapp.utils.Screen
 
@@ -30,8 +30,11 @@ fun NavigationGraph(
     scaffoldState: ScaffoldState,
     scope: CoroutineScope,
     homeViewModel: HomeViewModel,
+    recipesViewModel: RecipeViewModel,
+    myRecipesViewModel: MyRecipesViewModel,
     optionsListState: LazyListState,
     recipesListState: LazyListState,
+    myRecipesListState: LazyListState,
     context: Context,
     bottomNavState: MutableState<Boolean>,
 ) {
@@ -66,7 +69,7 @@ fun NavigationGraph(
             LaunchedEffect(Unit){
                 bottomNavState.value = true
             }
-            MyRecipesScreen()
+            MyRecipesScreen(myRecipesViewModel = myRecipesViewModel, myRecipesListState = myRecipesListState, context = context)
         }
 
         composable(route = Screen.FavouriteScreen.route){
@@ -87,7 +90,7 @@ fun NavigationGraph(
             }
             val recipes = navBackStackEntry.arguments?.getParcelable<Recipes>("recipes")
            recipes?.let {
-               RecipeDetailScreen(it, context = context)
+               RecipeDetailScreen(scope = scope, it, recipesViewModel = recipesViewModel, context = context)
            }
         }
 

@@ -1,6 +1,6 @@
 package com.im.cookgaloreapp.data.remote.service
 
-import com.im.cookgaloreapp.data.remote.Recipe.RecipesNetworkResponse
+import com.im.cookgaloreapp.data.remote.recipe.RecipesNetworkResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query

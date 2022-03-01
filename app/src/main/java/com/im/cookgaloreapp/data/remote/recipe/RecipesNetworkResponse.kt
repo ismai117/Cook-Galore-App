@@ -1,4 +1,4 @@
-package com.im.cookgaloreapp.data.remote.Recipe
+package com.im.cookgaloreapp.data.remote.recipe
 
 import com.google.gson.annotations.SerializedName
 

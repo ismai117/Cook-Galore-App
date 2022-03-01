@@ -1,5 +1,7 @@
 package com.im.cookgaloreapp.di
 
+import com.im.cookgaloreapp.data.local.util.BookmarkCacheMapper
+import com.im.cookgaloreapp.data.local.util.RecipesCacheMapper
 import com.im.cookgaloreapp.data.remote.util.RecipesResponseMapper
 import dagger.Module
 import dagger.Provides
@@ -16,6 +18,18 @@ object InteractorsModule {
     @Provides
     fun provideRecipesResponseMapper(): RecipesResponseMapper{
         return RecipesResponseMapper()
+    }
+
+    @Singleton
+    @Provides
+    fun provideRecipesCacheMapper(): RecipesCacheMapper{
+        return RecipesCacheMapper()
+    }
+
+    @Singleton
+    @Provides
+    fun provideBookmarkCacheMapper(): BookmarkCacheMapper {
+        return BookmarkCacheMapper()
     }
 
 }

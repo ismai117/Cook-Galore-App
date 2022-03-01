@@ -1,6 +1,7 @@
 package com.im.cookgaloreapp.ui.screens.recipe
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,11 +27,17 @@ import com.im.cookgaloreapp.R
 import com.im.cookgaloreapp.domain.Recipes.Recipes
 import com.im.cookgaloreapp.ui.components.imageLoader
 import com.im.cookgaloreapp.ui.theme.Fonts
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun RecipeDetailScreen(
+    scope: CoroutineScope,
     recipes: Recipes,
+    recipesViewModel: RecipeViewModel,
     context: Context,
 ) {
 
@@ -41,7 +48,7 @@ fun RecipeDetailScreen(
         .verticalScroll(scrollState)
     ) {
 
-        Column(modifier = Modifier.fillMaxWidth()){
+        Column(modifier = Modifier.fillMaxWidth()) {
             Card(
                 shape = RoundedCornerShape(bottomStart = 40.dp, bottomEnd = 40.dp)
             ) {
@@ -97,10 +104,32 @@ fun RecipeDetailScreen(
         Spacer(modifier = Modifier.padding(20.dp))
 
         Button(
-            onClick = {},
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF00A300), contentColor = Color.White),
-            modifier = Modifier.align(Alignment.CenterHorizontally).height(50.dp).width(150.dp),
-            shape = RoundedCornerShape(50.dp)
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF00A300),
+                contentColor = Color.White),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .height(50.dp)
+                .width(150.dp),
+            shape = RoundedCornerShape(50.dp),
+            onClick = {
+
+
+                scope.launch {
+
+                    recipesViewModel.ifExists(recipe = recipes.id!!).collectLatest {
+
+                        if (it <= 0){
+                            recipesViewModel.insertRecipe(recipes = recipes)
+                        }else{
+                            Toast.makeText(context, "${recipes.title} is added already", Toast.LENGTH_LONG).show()
+                        }
+
+                    }
+
+                }
+
+
+            },
         ) {
             Text(text = "Add Reciepe")
         }

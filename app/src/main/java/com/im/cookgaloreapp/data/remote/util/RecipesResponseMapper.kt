@@ -1,7 +1,6 @@
 package com.im.cookgaloreapp.data.remote.util
 
-import com.im.cookgaloreapp.data.remote.Recipe.RecipesNetworkEntity
-import com.im.cookgaloreapp.data.remote.Recipe.RecipesNetworkResponse
+import com.im.cookgaloreapp.data.remote.recipe.RecipesNetworkEntity
 import com.im.cookgaloreapp.domain.Recipes.Recipes
 import com.im.cookgaloreapp.domain.util.EntityMapper
 
