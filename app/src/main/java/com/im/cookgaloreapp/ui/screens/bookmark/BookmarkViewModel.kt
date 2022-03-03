@@ -1,13 +1,15 @@
 package com.im.cookgaloreapp.ui.screens.bookmark
 
 import androidx.lifecycle.ViewModel
-import com.im.cookgaloreapp.domain.bookmark.Bookmark
+import androidx.lifecycle.viewModelScope
 import com.im.cookgaloreapp.repository.RecipeRepository_Impl
 import com.im.cookgaloreapp.utils.NetworkState
 import com.im.cookgaloreapp.utils.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,15 +23,26 @@ constructor(
     val bookmark: StateFlow<ViewState> = _bookmark
 
     init {
-        getAllBookmark()
+        getAllBookmarks()
     }
 
-    fun getAllBookmark(){
+    private fun getAllBookmarks(){
 
         _bookmark.value = ViewState.Loading
 
+        viewModelScope.launch {
 
+            repositoryImpl.getBookmarks().collect {
 
+                if (it.isNullOrEmpty()){
+                    _bookmark.value = ViewState.Empty
+                }else{
+                    _bookmark.value = ViewState.Success(it)
+                }
+
+            }
+
+        }
 
     }
 

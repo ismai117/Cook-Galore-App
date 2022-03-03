@@ -19,12 +19,12 @@ constructor(
 
     fun insertRecipe(recipes: Recipes){
         viewModelScope.launch {
-            repositoryImpl.insert(recipes = recipes)
+            repositoryImpl.insertRecipes(recipes = recipes)
         }
     }
 
-    fun ifExists(recipe: Int): Flow<Int> {
-        return repositoryImpl.ifExists(recipe = recipe)
+    fun ifRecipesExists(recipe: Int): Flow<Int> {
+        return repositoryImpl.ifRecipesExists(recipe = recipe)
     }
 
 

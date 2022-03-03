@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface RecipeRepository {
 
-
     suspend fun searchRecipes(
         auth: String,
         page: Int,
@@ -14,10 +13,18 @@ interface RecipeRepository {
 
     fun getRecipes(): Flow<List<Recipes>>
 
-    fun ifExists(recipe: Int): Flow<Int>
+    fun ifRecipesExists(recipe: Int): Flow<Int>
 
-    suspend fun insert(recipes: Recipes)
+    suspend fun insertRecipes(recipes: Recipes)
 
-    suspend fun delete(recipes: Recipes)
+    suspend fun deleteRecipes(recipes: Recipes)
+
+    fun getBookmarks(): Flow<List<Recipes>>
+
+    fun ifBookmarkExists(bookmark: Int): Flow<Int>
+
+    suspend fun insertBookmark(bookmark: Recipes)
+
+    suspend fun deleteBookmark(bookmark: Recipes)
 
 }

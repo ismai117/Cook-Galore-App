@@ -11,6 +11,7 @@ import com.im.cookgaloreapp.utils.NetworkState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -65,6 +66,18 @@ constructor(
         }
 
     }
+
+
+    fun insertBookmark(bookmark: Recipes){
+        viewModelScope.launch {
+            repositoryImpl.insertBookmark(bookmark = bookmark)
+        }
+    }
+
+    fun ifBookmarkExists(bookmark: Int): Flow<Int> {
+        return repositoryImpl.ifBookmarkExists(bookmark = bookmark)
+    }
+
 
     fun onChangedQuery(query: String){
         this.query.value = query

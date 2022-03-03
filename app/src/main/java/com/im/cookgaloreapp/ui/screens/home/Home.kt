@@ -57,120 +57,123 @@ fun HomeScreen(
     }
 
 
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+
         Column(
-            modifier = Modifier.fillMaxSize()
-        ){
+            modifier = Modifier
+                .padding(top = 50.dp, start = 24.dp)
+        ) {
+            Text(
+                text = "Discover Best Recipe",
+                style = TextStyle(
+                    color = Color.Black,
+                    fontSize = 26.sp,
+                    fontFamily = Fonts
+                ),
+            )
+            Spacer(modifier = Modifier.padding(4.dp))
+            Text(
+                text = "For Cooking",
+                style = TextStyle(
+                    color = Color.Black,
+                    fontSize = 26.sp,
+                    fontFamily = Fonts
+                ),
+            )
+            TextField(
+                value = query,
+                onValueChange = { homeViewModel.onChangedQuery(it) },
+                label = {
+                    Text(text = "Find Recipe")
+                },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = ""
+                    )
+                },
+                trailingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_filter),
+                        contentDescription = "",
+                        modifier = Modifier.clickable {
 
-            Column(
+                        },
+                    )
+                },
+                shape = RoundedCornerShape(50.dp),
                 modifier = Modifier
-                    .padding(top = 50.dp, start = 24.dp)
-            ) {
-                Text(
-                    text = "Discover Best Recipe",
-                    style = TextStyle(
-                        color = Color.Black,
-                        fontSize = 26.sp,
-                        fontFamily = Fonts
-                    ),
-                )
-                Spacer(modifier = Modifier.padding(4.dp))
-                Text(
-                    text = "For Cooking",
-                    style = TextStyle(
-                        color = Color.Black,
-                        fontSize = 26.sp,
-                        fontFamily = Fonts
-                    ),
-                )
-                TextField(
-                    value = query,
-                    onValueChange = { homeViewModel.onChangedQuery(it) },
-                    label = {
-                        Text(text = "Find Recipe")
-                    },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Filled.Search,
-                            contentDescription = ""
-                        )
-                    },
-                    trailingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_filter),
-                            contentDescription = "",
-                            modifier = Modifier.clickable {
-
-                            },
-                        )
-                    },
-                    shape = RoundedCornerShape(50.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 40.dp, end = 24.dp),
-                    keyboardActions = KeyboardActions(onSearch = {
-                        if (query != "") {
-                            homeViewModel.searchRecipes(query)
-                        } else {
-                            scope.launch {
-                                scaffoldState.snackbarHostState.showSnackbar("Empty query")
-                            }
+                    .fillMaxWidth()
+                    .padding(top = 40.dp, end = 24.dp),
+                keyboardActions = KeyboardActions(onSearch = {
+                    if (query != "") {
+                        homeViewModel.searchRecipes(query)
+                    } else {
+                        scope.launch {
+                            scaffoldState.snackbarHostState.showSnackbar("Empty query")
                         }
-                        softKeyboardController?.hide()
-                    }),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Search
-                    ),
-                    colors = TextFieldDefaults.textFieldColors(
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        textColor = Color.Black,
-                        cursorColor = Color.Black
-                    ),
-                )
+                    }
+                    softKeyboardController?.hide()
+                }),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Search
+                ),
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    textColor = Color.Black,
+                    cursorColor = Color.Black
+                ),
+            )
+        }
+
+        OptionsList(
+            navController = navController,
+            optionsListState = optionsListState,
+            context = context,
+            titles = titles)
+
+        when (recipes) {
+
+            is NetworkState.Success -> {
+
+                recipes.data?.let {
+
+                    RecipesList(
+                        navController = navController,
+                        scope = scope,
+                        homeViewModel = homeViewModel,
+                        recipes = it,
+                        recipesListState = recipesListState,
+                        context = context
+                    )
+
+                }
+
             }
 
-            OptionsList(
-                navController = navController,
-                optionsListState = optionsListState,
-                context = context,
-                titles = titles)
+            is NetworkState.Error -> {
 
-            when (recipes) {
-
-                is NetworkState.Success -> {
-
-                    recipes.data?.let {
-
-                        RecipesList(
-                            navController = navController,
-                            recipes = it,
-                            recipesListState = recipesListState,
-                            context = context)
-
+                LaunchedEffect(scope) {
+                    scope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar("${recipes.error?.message}")
                     }
-
                 }
 
-                is NetworkState.Error -> {
+            }
 
-                    LaunchedEffect(scope){
-                        scope.launch {
-                            scaffoldState.snackbarHostState.showSnackbar("${recipes.error?.message}")
-                        }
-                    }
+            is NetworkState.Loading -> {
 
-                }
+                ProgressBar(isEnabled = true)
 
-                is NetworkState.Loading -> {
+            }
 
-                    ProgressBar(isEnabled = true)
+            else -> {
 
-                }
-
-                else -> {
-
-                }
+            }
 
 
         }

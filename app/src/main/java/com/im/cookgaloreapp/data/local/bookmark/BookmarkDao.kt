@@ -1,25 +1,23 @@
 package com.im.cookgaloreapp.data.local.bookmark
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.im.cookgaloreapp.data.local.recipe.RecipesCacheEntity
 import kotlinx.coroutines.flow.Flow
 
+@Dao
 interface BookmarkDao {
 
     @Query("SELECT * FROM bookmark_table")
-    fun getBookmarkRecipes(): Flow<List<BookmarkCacheEntity>>
+    fun getBookmarks(): Flow<List<BookmarkCacheEntity>>
 
-    @Query("SELECT COUNT() FROM recipes_table WHERE id = :recipe")
-    fun ifExists(recipe: Int): Flow<Int>
+    @Query("SELECT COUNT() FROM bookmark_table WHERE id = :bookmark")
+    fun ifBookmarkExists(bookmark: Int): Flow<Int>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(recipes: BookmarkCacheEntity)
+    suspend fun insert(bookmark: BookmarkCacheEntity)
 
     @Delete
-    suspend fun delete(recipes: BookmarkCacheEntity)
+    suspend fun delete(bookmark: BookmarkCacheEntity)
 
     @Query("DELETE FROM bookmark_table")
     fun deleteBookmarkRecipes()

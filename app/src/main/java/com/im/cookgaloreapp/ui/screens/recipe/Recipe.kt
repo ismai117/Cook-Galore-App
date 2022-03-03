@@ -116,7 +116,7 @@ fun RecipeDetailScreen(
 
                 scope.launch {
 
-                    recipesViewModel.ifExists(recipe = recipes.id!!).collectLatest {
+                    recipesViewModel.ifRecipesExists(recipe = recipes.id!!).collectLatest {
 
                         if (it <= 0){
                             recipesViewModel.insertRecipe(recipes = recipes)

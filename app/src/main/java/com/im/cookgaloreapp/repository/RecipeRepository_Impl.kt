@@ -7,6 +7,7 @@ import com.im.cookgaloreapp.data.local.util.RecipesCacheMapper
 import com.im.cookgaloreapp.data.remote.service.RecipeService
 import com.im.cookgaloreapp.data.remote.util.RecipesResponseMapper
 import com.im.cookgaloreapp.domain.Recipes.Recipes
+
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -30,16 +31,32 @@ constructor(
         return cacheMapper.mapFromEntityFlowList(recipesDao.getRecipes())
     }
 
-    override fun ifExists(recipe: Int): Flow<Int> {
+    override fun ifRecipesExists(recipe: Int): Flow<Int> {
         return recipesDao.ifExists(recipe = recipe)
     }
 
-    override suspend fun insert(recipes: Recipes) {
+    override suspend fun insertRecipes(recipes: Recipes) {
         recipesDao.insert(cacheMapper.toEntity(recipes))
     }
 
-    override suspend fun delete(recipes: Recipes) {
+    override suspend fun deleteRecipes(recipes: Recipes) {
         recipesDao.delete(cacheMapper.toEntity(recipes))
+    }
+
+    override fun getBookmarks(): Flow<List<Recipes>> {
+        return bookmarkCacheMapper.mapFromEntityFlowList(bookmarkDao.getBookmarks())
+    }
+
+    override fun ifBookmarkExists(bookmark: Int): Flow<Int> {
+        return bookmarkDao.ifBookmarkExists(bookmark = bookmark)
+    }
+
+    override suspend fun insertBookmark(bookmark: Recipes) {
+        bookmarkDao.insert(bookmarkCacheMapper.toEntity(bookmark))
+    }
+
+    override suspend fun deleteBookmark(bookmark: Recipes) {
+        bookmarkDao.delete(bookmarkCacheMapper.toEntity(bookmark))
     }
 
 }

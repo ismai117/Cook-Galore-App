@@ -3,15 +3,14 @@ package com.im.cookgaloreapp.data.local.util
 import com.im.cookgaloreapp.data.local.bookmark.BookmarkCacheEntity
 import com.im.cookgaloreapp.data.local.recipe.RecipesCacheEntity
 import com.im.cookgaloreapp.domain.Recipes.Recipes
-import com.im.cookgaloreapp.domain.bookmark.Bookmark
 import com.im.cookgaloreapp.domain.util.EntityMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class BookmarkCacheMapper : EntityMapper<BookmarkCacheEntity, Bookmark> {
+class BookmarkCacheMapper : EntityMapper<BookmarkCacheEntity, Recipes> {
 
-    override fun fromEntity(entity: BookmarkCacheEntity): Bookmark {
-        return Bookmark(
+    override fun fromEntity(entity: BookmarkCacheEntity):Recipes {
+        return Recipes(
             id = entity.id,
             cooking_instructions = entity.cooking_instructions,
             date_added = entity.date_added,
@@ -28,7 +27,7 @@ class BookmarkCacheMapper : EntityMapper<BookmarkCacheEntity, Bookmark> {
         )
     }
 
-    override fun toEntity(model: Bookmark): BookmarkCacheEntity {
+    override fun toEntity(model: Recipes): BookmarkCacheEntity {
         return BookmarkCacheEntity(
             id = model.id,
             cooking_instructions = model.cooking_instructions,
@@ -46,11 +45,11 @@ class BookmarkCacheMapper : EntityMapper<BookmarkCacheEntity, Bookmark> {
         )
     }
 
-    fun mapFromEntityList(entity: List<BookmarkCacheEntity>): List<Bookmark> {
+    fun mapFromEntityList(entity: List<BookmarkCacheEntity>): List<Recipes> {
         return entity.map { fromEntity(it) }
     }
 
-    fun mapFromEntityFlowList(entity: Flow<List<BookmarkCacheEntity>>): Flow<List<Bookmark>> {
+    fun mapFromEntityFlowList(entity: Flow<List<BookmarkCacheEntity>>): Flow<List<Recipes>> {
         return entity.map { mapFromEntityList(it) }
     }
 

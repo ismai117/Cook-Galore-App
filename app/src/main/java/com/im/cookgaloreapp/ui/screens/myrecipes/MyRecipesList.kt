@@ -28,8 +28,8 @@ import com.im.cookgaloreapp.ui.components.imageLoader
 @Composable
 fun MyRecipesList(
     recipes: List<Recipes>,
+    myRecipesListState: LazyListState,
     context: Context,
-    myRecipesListState: LazyListState
 ) {
 
     LazyColumn(

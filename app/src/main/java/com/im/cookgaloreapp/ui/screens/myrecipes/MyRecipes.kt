@@ -14,6 +14,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.im.cookgaloreapp.domain.Recipes.Recipes
+import com.im.cookgaloreapp.ui.components.ProgressBar
 import com.im.cookgaloreapp.ui.theme.Fonts
 import com.im.cookgaloreapp.utils.ViewState
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +23,11 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun MyRecipesScreen(myRecipesViewModel: MyRecipesViewModel, myRecipesListState: LazyListState, context: Context) {
+fun MyRecipesScreen(
+    myRecipesViewModel: MyRecipesViewModel,
+    myRecipesListState: LazyListState,
+    context: Context
+) {
 
 
     val recipes = myRecipesViewModel.myRecipes.collectAsState().value
@@ -41,6 +46,7 @@ fun MyRecipesScreen(myRecipesViewModel: MyRecipesViewModel, myRecipesListState: 
 
         is ViewState.Loading -> {
 
+            ProgressBar(isEnabled = true)
 
         }
 
@@ -55,6 +61,7 @@ fun MyRecipesScreen(myRecipesViewModel: MyRecipesViewModel, myRecipesListState: 
 
         }
 
+
     }
 
 
@@ -62,7 +69,7 @@ fun MyRecipesScreen(myRecipesViewModel: MyRecipesViewModel, myRecipesListState: 
 
 
 @Composable
-fun MyRecipesUI(recipes: List<Recipes>, context: Context, myRecipesListState: LazyListState) {
+fun MyRecipesUI(recipes: List<Recipes>, myRecipesListState: LazyListState, context: Context) {
 
     Column(modifier = Modifier.fillMaxSize()) {
 

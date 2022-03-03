@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import com.im.cookgaloreapp.domain.Recipes.Recipes
 import com.im.cookgaloreapp.ui.screens.HomeScreen
 import com.im.cookgaloreapp.ui.screens.bookmark.BookmarkScreen
+import com.im.cookgaloreapp.ui.screens.bookmark.BookmarkViewModel
 import com.im.cookgaloreapp.ui.screens.bookmark.FavouriteScreen
 import com.im.cookgaloreapp.ui.screens.home.HomeViewModel
 import com.im.cookgaloreapp.ui.screens.myrecipes.MyRecipesScreen
@@ -32,20 +33,22 @@ fun NavigationGraph(
     homeViewModel: HomeViewModel,
     recipesViewModel: RecipeViewModel,
     myRecipesViewModel: MyRecipesViewModel,
+    bookmarkViewModel: BookmarkViewModel,
     optionsListState: LazyListState,
     recipesListState: LazyListState,
     myRecipesListState: LazyListState,
+    bookmarkListState: LazyListState,
     context: Context,
     bottomNavState: MutableState<Boolean>,
 ) {
 
     NavHost(
         navController = navController as NavHostController,
-       startDestination = Screen.HomeScreen.route
-    ){
+        startDestination = Screen.HomeScreen.route
+    ) {
 
-        composable(route = Screen.HomeScreen.route){
-            LaunchedEffect(Unit){
+        composable(route = Screen.HomeScreen.route) {
+            LaunchedEffect(Unit) {
                 bottomNavState.value = true
             }
             HomeScreen(
@@ -58,22 +61,26 @@ fun NavigationGraph(
             )
         }
 
-        composable(route = Screen.BookmarkScreen.route){
-            LaunchedEffect(Unit){
+        composable(route = Screen.BookmarkScreen.route) {
+            LaunchedEffect(Unit) {
                 bottomNavState.value = true
             }
-            BookmarkScreen()
+            BookmarkScreen(bookmarkViewModel = bookmarkViewModel,
+                bookmarkListState = bookmarkListState,
+                context = context)
         }
 
-        composable(route = Screen.MyRecipesScreen.route){
-            LaunchedEffect(Unit){
+        composable(route = Screen.MyRecipesScreen.route) {
+            LaunchedEffect(Unit) {
                 bottomNavState.value = true
             }
-            MyRecipesScreen(myRecipesViewModel = myRecipesViewModel, myRecipesListState = myRecipesListState, context = context)
+            MyRecipesScreen(myRecipesViewModel = myRecipesViewModel,
+                myRecipesListState = myRecipesListState,
+                context = context)
         }
 
-        composable(route = Screen.FavouriteScreen.route){
-            LaunchedEffect(Unit){
+        composable(route = Screen.FavouriteScreen.route) {
+            LaunchedEffect(Unit) {
                 bottomNavState.value = true
             }
             FavouriteScreen()
@@ -81,17 +88,20 @@ fun NavigationGraph(
 
         composable(
             route = Screen.RecipeDetailScreen.route + "{recipes}",
-            arguments = listOf(navArgument("recipes"){
+            arguments = listOf(navArgument("recipes") {
                 type = AssetParamType()
             })
-        ){ navBackStackEntry ->
-            LaunchedEffect(Unit){
+        ) { navBackStackEntry ->
+            LaunchedEffect(Unit) {
                 bottomNavState.value = false
             }
             val recipes = navBackStackEntry.arguments?.getParcelable<Recipes>("recipes")
-           recipes?.let {
-               RecipeDetailScreen(scope = scope, it, recipesViewModel = recipesViewModel, context = context)
-           }
+            recipes?.let {
+                RecipeDetailScreen(scope = scope,
+                    it,
+                    recipesViewModel = recipesViewModel,
+                    context = context)
+            }
         }
 
     }
