@@ -97,8 +97,10 @@ fun NavigationGraph(
             }
             val recipes = navBackStackEntry.arguments?.getParcelable<Recipes>("recipes")
             recipes?.let {
-                RecipeDetailScreen(scope = scope,
-                    it,
+                RecipeDetailScreen(
+                    navController = navController,
+                    scope = scope,
+                    recipes = it,
                     recipesViewModel = recipesViewModel,
                     context = context)
             }

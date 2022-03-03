@@ -23,12 +23,12 @@ import com.im.cookgaloreapp.utils.ViewState
 fun BookmarkScreen(
     bookmarkViewModel: BookmarkViewModel,
     bookmarkListState: LazyListState,
-    context: Context
-){
+    context: Context,
+) {
 
     val bookmarks = bookmarkViewModel.bookmark.collectAsState().value
 
-    when(bookmarks){
+    when (bookmarks) {
 
         is ViewState.Success -> {
 
@@ -67,21 +67,23 @@ fun BookmarkUI(bookmarks: List<Recipes>, bookmarkListState: LazyListState, conte
 
     Column(modifier = Modifier.fillMaxSize()) {
 
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(top = 50.dp, start = 24.dp)
+        ) {
             Text(
                 text = "Bookmark",
                 style = TextStyle(
                     color = Color.Black,
-                    fontSize = 22.sp,
+                    fontSize = 26.sp,
                     fontFamily = Fonts
                 ),
-                modifier = Modifier.padding(top = 40.dp, start = 20.dp)
             )
+            Spacer(modifier = Modifier.padding(4.dp))
         }
 
-        Spacer(modifier = Modifier.padding(20.dp))
-
-        BookmarkList(bookmarks = bookmarks, bookmarkListState = bookmarkListState, context = context)
+        BookmarkList(bookmarks = bookmarks,
+            bookmarkListState = bookmarkListState,
+            context = context)
 
     }
 

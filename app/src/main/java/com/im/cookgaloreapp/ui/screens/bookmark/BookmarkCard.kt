@@ -2,6 +2,7 @@ package com.im.cookgaloreapp.ui.screens.bookmark
 
 import android.content.Context
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -11,12 +12,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.im.cookgaloreapp.R
 import com.im.cookgaloreapp.domain.Recipes.Recipes
 import com.im.cookgaloreapp.ui.components.imageLoader
+import com.im.cookgaloreapp.ui.theme.Fonts
 
 
 @Composable
@@ -27,20 +31,11 @@ fun BookmarkCard(bookmark: Recipes, context: Context) {
         shape = RoundedCornerShape(12.dp),
     ){
 
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(15.dp)
+                .height(220.dp),
         ) {
-            Text(
-                text = "${bookmark.title}",
-                style = TextStyle(
-                    color = Color.Black,
-                    fontSize = 22.sp
-                )
-            )
-            Spacer(modifier = Modifier.padding(12.dp))
             val image = bookmark.featured_image?.let { imageLoader(url = it, resource = R.drawable.placeholder, context = context).value }
             image?.let {
                 Image(
@@ -48,12 +43,35 @@ fun BookmarkCard(bookmark: Recipes, context: Context) {
                     contentDescription = "",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(220.dp),
+                        .fillMaxSize()
+                        .background(Color.Black),
+                    alpha = 0.5f,
                 )
             }
+            Text(
+                text = "${bookmark.title}",
+                style = TextStyle(
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontFamily = Fonts
+                ),
+                modifier = Modifier
+                    .fillMaxWidth(0.85f)
+                    .padding(24.dp)
+            )
+
         }
 
     }
+
+}
+
+@Preview()
+@Composable
+fun showExample(){
+
+    val context = LocalContext.current
+
+    BookmarkCard(bookmark = Recipes(), context = context)
 
 }

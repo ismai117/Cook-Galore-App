@@ -73,19 +73,19 @@ fun MyRecipesUI(recipes: List<Recipes>, myRecipesListState: LazyListState, conte
 
     Column(modifier = Modifier.fillMaxSize()) {
 
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(top = 50.dp, start = 24.dp)
+        ) {
             Text(
                 text = "My Recipes",
                 style = TextStyle(
                     color = Color.Black,
-                    fontSize = 22.sp,
+                    fontSize = 26.sp,
                     fontFamily = Fonts
                 ),
-                modifier = Modifier.padding(top = 40.dp, start = 20.dp)
             )
+            Spacer(modifier = Modifier.padding(4.dp))
         }
-
-        Spacer(modifier = Modifier.padding(20.dp))
 
         MyRecipesList(recipes = recipes, context = context, myRecipesListState = myRecipesListState,)
 
