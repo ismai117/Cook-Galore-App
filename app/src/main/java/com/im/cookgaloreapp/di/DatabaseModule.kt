@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.im.cookgaloreapp.data.local.bookmark.BookmarkDao
 import com.im.cookgaloreapp.data.local.database.RecipesDB
+import com.im.cookgaloreapp.data.local.favourites.FavouritesDao
 import com.im.cookgaloreapp.data.local.recipe.RecipesDao
 import dagger.Module
 import dagger.Provides
@@ -35,8 +36,14 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideBookmarkRecipesDao(recipesDB: RecipesDB): BookmarkDao{
+    fun provideBookmarkDao(recipesDB: RecipesDB): BookmarkDao{
         return recipesDB.getBookmarkDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFavouritesDao(recipesDB: RecipesDB): FavouritesDao{
+        return recipesDB.getFavourites()
     }
 
 }

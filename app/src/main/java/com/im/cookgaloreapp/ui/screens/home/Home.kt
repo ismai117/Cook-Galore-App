@@ -1,5 +1,6 @@
 package com.im.cookgaloreapp.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
@@ -9,10 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +29,7 @@ import com.im.cookgaloreapp.ui.screens.home.HomeViewModel
 import com.im.cookgaloreapp.ui.screens.home.OptionsList
 import com.im.cookgaloreapp.ui.screens.home.RecipesList
 import com.im.cookgaloreapp.ui.theme.Fonts
-import com.im.cookgaloreapp.utils.NetworkState
+import com.im.cookgaloreapp.utils.ViewState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -47,7 +45,7 @@ fun HomeScreen(
     recipesListState: LazyListState,
 ) {
 
-    val recipes = homeViewModel.recipes.value
+    val recipes = homeViewModel.recipes.collectAsState().value
     val query = homeViewModel.query.value
     val context = LocalContext.current
     val titles = listOf("All", "Sushi", "Pizza", "Burger", "Pasta")
@@ -138,43 +136,43 @@ fun HomeScreen(
 
         when (recipes) {
 
-            is NetworkState.Success -> {
+            is ViewState.Success -> {
 
-                recipes.data?.let {
 
-                    RecipesList(
-                        navController = navController,
-                        scope = scope,
-                        homeViewModel = homeViewModel,
-                        recipes = it,
-                        recipesListState = recipesListState,
-                        context = context
-                    )
+                RecipesList(
+                    navController = navController,
+                    scope = scope,
+                    homeViewModel = homeViewModel,
+                    recipes = recipes.recipes,
+                    recipesListState = recipesListState,
+                    context = context
+                )
 
-                }
 
             }
 
-            is NetworkState.Error -> {
+            is ViewState.Error -> {
 
                 LaunchedEffect(scope) {
                     scope.launch {
-                        scaffoldState.snackbarHostState.showSnackbar("${recipes.error?.message}")
+                        scaffoldState.snackbarHostState.showSnackbar("${recipes.throwable.message}")
                     }
                 }
 
             }
 
-            is NetworkState.Loading -> {
+            is ViewState.Loading -> {
 
                 ProgressBar(isEnabled = true)
 
             }
 
-            else -> {
+
+            is ViewState.Empty -> {
+
+                Log.d("recipesSearch", "Empty")
 
             }
-
 
         }
     }

@@ -3,7 +3,7 @@ package com.im.cookgaloreapp.ui.screens.recipe
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.im.cookgaloreapp.domain.Recipes.Recipes
-import com.im.cookgaloreapp.repository.RecipeRepository_Impl
+import com.im.cookgaloreapp.repository.recipe.RecipeRepository_Impl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch

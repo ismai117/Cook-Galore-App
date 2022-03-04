@@ -32,45 +32,6 @@ fun MyRecipesScreen(
 
     val recipes = myRecipesViewModel.myRecipes.collectAsState().value
 
-    when (recipes) {
-
-        is ViewState.Success -> {
-
-            MyRecipesUI(
-                recipes = recipes.recipes,
-                context = context,
-                myRecipesListState = myRecipesListState,
-            )
-
-        }
-
-        is ViewState.Loading -> {
-
-            ProgressBar(isEnabled = true)
-
-        }
-
-        is ViewState.Error-> {
-
-
-        }
-
-        is ViewState.Empty-> {
-
-            Toast.makeText(context, "empty", Toast.LENGTH_LONG).show()
-
-        }
-
-
-    }
-
-
-}
-
-
-@Composable
-fun MyRecipesUI(recipes: List<Recipes>, myRecipesListState: LazyListState, context: Context) {
-
     Column(modifier = Modifier.fillMaxSize()) {
 
         Column(
@@ -87,9 +48,40 @@ fun MyRecipesUI(recipes: List<Recipes>, myRecipesListState: LazyListState, conte
             Spacer(modifier = Modifier.padding(4.dp))
         }
 
-        MyRecipesList(recipes = recipes, context = context, myRecipesListState = myRecipesListState,)
+        when (recipes) {
+
+            is ViewState.Success -> {
+
+                MyRecipesList(
+                    recipes = recipes.recipes,
+                    context = context,
+                    myRecipesListState = myRecipesListState,
+                )
+
+            }
+
+            is ViewState.Loading -> {
+
+                ProgressBar(isEnabled = true)
+
+            }
+
+            is ViewState.Error-> {
+
+
+            }
+
+            is ViewState.Empty-> {
+
+                Toast.makeText(context, "empty", Toast.LENGTH_LONG).show()
+
+            }
+
+
+        }
 
     }
+
 
 }
 

@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.im.cookgaloreapp.ui.components.BottomNav
 import com.im.cookgaloreapp.ui.components.NavigationGraph
 import com.im.cookgaloreapp.ui.screens.bookmark.BookmarkViewModel
+import com.im.cookgaloreapp.ui.screens.favourite.FavouriteViewModel
 import com.im.cookgaloreapp.ui.screens.home.HomeViewModel
 import com.im.cookgaloreapp.ui.screens.myrecipes.MyRecipesViewModel
 import com.im.cookgaloreapp.ui.screens.recipe.RecipeViewModel
@@ -33,7 +34,7 @@ class MainActivity : ComponentActivity() {
     private val recipesViewModel: RecipeViewModel by viewModels()
     private val myRecipesViewModel: MyRecipesViewModel by viewModels()
     private val bookmarkViewModel: BookmarkViewModel by viewModels()
-
+    private val favouriteViewModel: FavouriteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +45,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background,
                 ) {
-                    MainScreen(homeViewModel, recipesViewModel, myRecipesViewModel, bookmarkViewModel)
+                    MainScreen(homeViewModel, recipesViewModel, myRecipesViewModel, bookmarkViewModel, favouriteViewModel)
                 }
             }
 
@@ -56,7 +57,8 @@ class MainActivity : ComponentActivity() {
         homeViewModel: HomeViewModel,
         recipesViewModel: RecipeViewModel,
         myRecipesViewModel: MyRecipesViewModel,
-        bookmarkViewModel: BookmarkViewModel
+        bookmarkViewModel: BookmarkViewModel,
+        favouriteViewModel: FavouriteViewModel
     ) {
 
         val scaffoldState = rememberScaffoldState()
@@ -66,6 +68,7 @@ class MainActivity : ComponentActivity() {
         val recipesListState = rememberLazyListState()
         val myRecipesListState = rememberLazyListState()
         val bookmarkListState = rememberLazyListState()
+        val favouriteListState = rememberLazyListState()
         val bottomNavState = rememberSaveable() { mutableStateOf(false) }
 
         com.google.accompanist.insets.ui.Scaffold(
@@ -86,10 +89,12 @@ class MainActivity : ComponentActivity() {
                     recipesViewModel = recipesViewModel,
                     myRecipesViewModel =  myRecipesViewModel,
                     bookmarkViewModel = bookmarkViewModel,
+                    favouriteViewModel = favouriteViewModel,
                     optionsListState = optionsListState,
                     recipesListState = recipesListState,
                     myRecipesListState = myRecipesListState,
                     bookmarkListState = bookmarkListState,
+                    favouritesListState = favouriteListState,
                     context = this@MainActivity,
                     bottomNavState = bottomNavState
                 )

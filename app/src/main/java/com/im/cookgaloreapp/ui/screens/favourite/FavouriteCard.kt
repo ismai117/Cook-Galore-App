@@ -1,11 +1,10 @@
-package com.im.cookgaloreapp.ui.screens.bookmark
+package com.im.cookgaloreapp.ui.screens.favourite
 
 import android.content.Context
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -14,10 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.im.cookgaloreapp.R
@@ -27,31 +23,22 @@ import com.im.cookgaloreapp.ui.theme.Fonts
 
 
 @Composable
-fun BookmarkCard(bookmark: Recipes, context: Context) {
-
-
+fun FavouriteCard(
+    favourites: Recipes,
+    context: Context
+){
 
     Card(
         elevation = 12.dp,
         shape = RoundedCornerShape(12.dp),
-//                modifier = Modifier.animateItemPlacement(
-//                    animationSpec = spring(
-//                        stiffness = Spring.StiffnessMediumLow,
-//                        visibilityThreshold = IntOffset.VisibilityThreshold
-//                    )
-//                )
-    ) {
+    ){
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(220.dp)
+                .height(220.dp),
         ) {
-            val image = bookmark.featured_image?.let {
-                imageLoader(url = it,
-                    resource = R.drawable.placeholder,
-                    context = context).value
-            }
+            val image = favourites.featured_image?.let { imageLoader(url = it, resource = R.drawable.placeholder, context = context).value }
             image?.let {
                 Image(
                     bitmap = it.asImageBitmap(),
@@ -64,7 +51,7 @@ fun BookmarkCard(bookmark: Recipes, context: Context) {
                 )
             }
             Text(
-                text = "${bookmark.title}",
+                text = "${favourites.title}",
                 style = TextStyle(
                     color = Color.White,
                     fontSize = 18.sp,
@@ -78,16 +65,5 @@ fun BookmarkCard(bookmark: Recipes, context: Context) {
         }
 
     }
-
-
-}
-
-@Preview()
-@Composable
-fun showExample() {
-
-    val context = LocalContext.current
-
-    BookmarkCard(bookmark = Recipes(), context = context)
 
 }

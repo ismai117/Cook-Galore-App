@@ -14,6 +14,7 @@ import com.im.cookgaloreapp.ui.screens.HomeScreen
 import com.im.cookgaloreapp.ui.screens.bookmark.BookmarkScreen
 import com.im.cookgaloreapp.ui.screens.bookmark.BookmarkViewModel
 import com.im.cookgaloreapp.ui.screens.bookmark.FavouriteScreen
+import com.im.cookgaloreapp.ui.screens.favourite.FavouriteViewModel
 import com.im.cookgaloreapp.ui.screens.home.HomeViewModel
 import com.im.cookgaloreapp.ui.screens.myrecipes.MyRecipesScreen
 import com.im.cookgaloreapp.ui.screens.myrecipes.MyRecipesViewModel
@@ -34,10 +35,12 @@ fun NavigationGraph(
     recipesViewModel: RecipeViewModel,
     myRecipesViewModel: MyRecipesViewModel,
     bookmarkViewModel: BookmarkViewModel,
+    favouriteViewModel: FavouriteViewModel,
     optionsListState: LazyListState,
     recipesListState: LazyListState,
     myRecipesListState: LazyListState,
     bookmarkListState: LazyListState,
+    favouritesListState: LazyListState,
     context: Context,
     bottomNavState: MutableState<Boolean>,
 ) {
@@ -65,7 +68,11 @@ fun NavigationGraph(
             LaunchedEffect(Unit) {
                 bottomNavState.value = true
             }
-            BookmarkScreen(bookmarkViewModel = bookmarkViewModel,
+            BookmarkScreen(
+                navController = navController,
+                bookmarkViewModel = bookmarkViewModel,
+                scaffoldState = scaffoldState,
+                scope = scope,
                 bookmarkListState = bookmarkListState,
                 context = context)
         }
@@ -83,7 +90,7 @@ fun NavigationGraph(
             LaunchedEffect(Unit) {
                 bottomNavState.value = true
             }
-            FavouriteScreen()
+            FavouriteScreen(favouriteViewModel, favouritesListState, context)
         }
 
         composable(

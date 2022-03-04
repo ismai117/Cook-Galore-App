@@ -1,13 +1,12 @@
 package com.im.cookgaloreapp.ui.screens.home
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.im.cookgaloreapp.domain.Recipes.Recipes
-import com.im.cookgaloreapp.repository.RecipeRepository_Impl
-import com.im.cookgaloreapp.utils.NetworkState
+import com.im.cookgaloreapp.repository.bookmark.BookmarkRepository_Impl
+import com.im.cookgaloreapp.repository.recipe.RecipeRepository_Impl
+import com.im.cookgaloreapp.utils.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -23,13 +22,14 @@ import javax.inject.Inject
 class HomeViewModel
 @Inject
 constructor(
-    val repositoryImpl: RecipeRepository_Impl
+    private val recipeRepositoryImpl: RecipeRepository_Impl,
+    private val bookmarkRepositoryImpl: BookmarkRepository_Impl
 ) : ViewModel() {
 
     private val Authorization = "Token 9c8b06d329136da358c2d00e76946b0111ce2c48"
 
-    private val _recipes: MutableState<NetworkState<List<Recipes>>?> = mutableStateOf(null)
-    val recipes: MutableState<NetworkState<List<Recipes>>?> = _recipes
+    private val _recipes = MutableStateFlow<ViewState>(ViewState.Success(emptyList()))
+    val recipes: StateFlow<ViewState> = _recipes
 
     val query = mutableStateOf("")
 
@@ -43,22 +43,26 @@ constructor(
 
         viewModelScope.launch(Dispatchers.IO) {
 
-            _recipes.value = NetworkState.Loading()
+            _recipes.value = ViewState.Loading
 
             try {
 
-                val response = repositoryImpl
+                val response = recipeRepositoryImpl
                     .searchRecipes(
                         auth = Authorization,
                         page = 1,
                         query = query
                     )
 
-                _recipes.value = NetworkState.Success(response)
+                if (response.isNullOrEmpty()){
+                    _recipes.value = ViewState.Empty
+                }else{
+                    _recipes.value = ViewState.Success(response)
+                }
 
             } catch (exception: Exception){
 
-                _recipes.value = NetworkState.Error(exception)
+                _recipes.value = ViewState.Error(exception)
 
             }
 
@@ -70,12 +74,12 @@ constructor(
 
     fun insertBookmark(bookmark: Recipes){
         viewModelScope.launch {
-            repositoryImpl.insertBookmark(bookmark = bookmark)
+            bookmarkRepositoryImpl.insertBookmark(bookmark = bookmark)
         }
     }
 
     fun ifBookmarkExists(bookmark: Int): Flow<Int> {
-        return repositoryImpl.ifBookmarkExists(bookmark = bookmark)
+        return bookmarkRepositoryImpl.ifBookmarkExists(bookmark = bookmark)
     }
 
 

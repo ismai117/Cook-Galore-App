@@ -1,7 +1,8 @@
-package com.im.cookgaloreapp.ui.screens.myrecipes
+package com.im.cookgaloreapp.ui.screens.favourite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.im.cookgaloreapp.repository.favourite.FavouriteRepository_Impl
 import com.im.cookgaloreapp.repository.recipe.RecipeRepository_Impl
 import com.im.cookgaloreapp.utils.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,42 +14,43 @@ import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class MyRecipesViewModel
+class FavouriteViewModel
 @Inject
 constructor(
-    private val repositoryImpl: RecipeRepository_Impl,
+    private val favouriteRepositoryImpl: FavouriteRepository_Impl
 ) : ViewModel() {
 
-    private val _myRecipes = MutableStateFlow<ViewState>(ViewState.Success(emptyList()))
-    val myRecipes: StateFlow<ViewState> = _myRecipes
+    private val _favourites = MutableStateFlow<ViewState>(ViewState.Success(emptyList()))
+    val favourites: StateFlow<ViewState> = _favourites
+
 
     init {
-        getAllRecipes()
+        getFavourites()
     }
 
-    private fun getAllRecipes() {
+    private fun getFavourites() {
 
-        _myRecipes.value = ViewState.Loading
+        _favourites.value = ViewState.Loading
 
         viewModelScope.launch {
 
-            repositoryImpl.getRecipes().collect {
+            favouriteRepositoryImpl.getFavourites().collect {
 
                 try {
 
                     if (it.isNullOrEmpty()) {
 
-                        _myRecipes.value = ViewState.Empty
+                        _favourites.value = ViewState.Empty
 
                     } else {
 
-                        _myRecipes.value = ViewState.Success(it)
+                        _favourites.value = ViewState.Success(it)
 
                     }
 
                 } catch (exception: Exception){
 
-                    _myRecipes.value = ViewState.Error(exception)
+                    _favourites.value = ViewState.Error(exception)
 
                 }
 
@@ -57,5 +59,6 @@ constructor(
         }
 
     }
+
 
 }
