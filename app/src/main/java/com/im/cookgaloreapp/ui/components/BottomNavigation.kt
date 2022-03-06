@@ -1,5 +1,6 @@
 package com.im.cookgaloreapp.ui.components
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInVertically
@@ -64,16 +65,23 @@ fun BottomNav(
                         selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                         onClick = {
 
-                            navController.navigate(item.route) {
+                            try {
+                                navController.navigate(item.route) {
 
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
 
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
 
-
+                            } catch (e: IllegalStateException) {
+                                if (e.message != "Already attached to lifecycleOwner") {
+                                    throw e
+                                } else {
+                                    Log.d("bottomNavigation", "${e.message}")
+                                }
                             }
 
                         },
