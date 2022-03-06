@@ -81,7 +81,9 @@ fun NavigationGraph(
             LaunchedEffect(Unit) {
                 bottomNavState.value = true
             }
-            MyRecipesScreen(myRecipesViewModel = myRecipesViewModel,
+            MyRecipesScreen(
+                scope  = scope,
+                myRecipesViewModel = myRecipesViewModel,
                 myRecipesListState = myRecipesListState,
                 context = context)
         }

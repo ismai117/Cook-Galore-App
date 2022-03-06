@@ -45,6 +45,7 @@ fun BookmarkList(
             items = bookmarks,
         ) { index, bookmark ->
 
+
             BookmarkCard(bookmark = bookmark, context = context)
 
             Log.d("myRecipes", "${bookmark.title}")

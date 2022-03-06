@@ -34,12 +34,7 @@ fun BookmarkCard(bookmark: Recipes, context: Context) {
     Card(
         elevation = 12.dp,
         shape = RoundedCornerShape(12.dp),
-//                modifier = Modifier.animateItemPlacement(
-//                    animationSpec = spring(
-//                        stiffness = Spring.StiffnessMediumLow,
-//                        visibilityThreshold = IntOffset.VisibilityThreshold
-//                    )
-//                )
+
     ) {
 
         Box(

@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MyRecipesScreen(
+    scope: CoroutineScope,
     myRecipesViewModel: MyRecipesViewModel,
     myRecipesListState: LazyListState,
     context: Context
@@ -45,7 +46,7 @@ fun MyRecipesScreen(
                     fontFamily = Fonts
                 ),
             )
-            Spacer(modifier = Modifier.padding(4.dp))
+            Spacer(modifier = Modifier.padding(12.dp))
         }
 
         when (recipes) {
@@ -53,6 +54,8 @@ fun MyRecipesScreen(
             is ViewState.Success -> {
 
                 MyRecipesList(
+                    scope = scope,
+                    myRecipesViewModel = myRecipesViewModel,
                     recipes = recipes.recipes,
                     context = context,
                     myRecipesListState = myRecipesListState,
@@ -73,7 +76,7 @@ fun MyRecipesScreen(
 
             is ViewState.Empty-> {
 
-                Toast.makeText(context, "empty", Toast.LENGTH_LONG).show()
+
 
             }
 

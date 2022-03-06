@@ -2,9 +2,13 @@ package com.im.cookgaloreapp.ui.screens.myrecipes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.im.cookgaloreapp.domain.Recipes.Recipes
+import com.im.cookgaloreapp.repository.favourite.FavouriteRepository
+import com.im.cookgaloreapp.repository.favourite.FavouriteRepository_Impl
 import com.im.cookgaloreapp.repository.recipe.RecipeRepository_Impl
 import com.im.cookgaloreapp.utils.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -17,6 +21,7 @@ class MyRecipesViewModel
 @Inject
 constructor(
     private val repositoryImpl: RecipeRepository_Impl,
+    private val favouriteRepository_Impl: FavouriteRepository_Impl
 ) : ViewModel() {
 
     private val _myRecipes = MutableStateFlow<ViewState>(ViewState.Success(emptyList()))
@@ -57,5 +62,16 @@ constructor(
         }
 
     }
+
+    fun insertFavouriteRecipe(recipes: Recipes){
+        viewModelScope.launch {
+            favouriteRepository_Impl.insertFavourites(recipes)
+        }
+    }
+
+    fun ifFavouriteRecipeExists(recipe: Int): Flow<Int> {
+        return favouriteRepository_Impl.ifFavouritesExists(recipe)
+    }
+
 
 }

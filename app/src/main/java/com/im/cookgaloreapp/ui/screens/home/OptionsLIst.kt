@@ -26,8 +26,9 @@ import com.im.cookgaloreapp.ui.theme.Fonts
 fun OptionsList(
     navController: NavController,
     optionsListState: LazyListState,
+    homeViewModel: HomeViewModel,
+    titles: List<RecipeCategory>,
     context: Context,
-    titles: List<String>
 ) {
     LazyRow(
         state = optionsListState,
@@ -39,27 +40,34 @@ fun OptionsList(
         itemsIndexed(
             items = titles
         ) { index, item ->
+
             Card(
                 shape = RoundedCornerShape(8.dp),
                 backgroundColor = Color(0xFF00A300),
+                onClick = {
+                    homeViewModel.searchRecipes(item.name)
+                }
             ) {
                 Column(
                     modifier = Modifier
                         .height(45.dp)
-                        .width(100.dp),
+                        .width(120.dp)
+                        .padding(8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "$item",
+                        text = "${item.name}",
                         style = TextStyle(
                             color = Color.White,
-                            fontSize = 16.sp,
+                            fontSize = 14.sp,
                             fontFamily = Fonts
                         )
                     )
                 }
             }
+
         }
+
     }
 }

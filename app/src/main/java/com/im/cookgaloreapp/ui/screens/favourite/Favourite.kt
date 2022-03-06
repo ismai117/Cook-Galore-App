@@ -16,6 +16,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.im.cookgaloreapp.domain.Recipes.Recipes
+import com.im.cookgaloreapp.ui.components.ProgressBar
 import com.im.cookgaloreapp.ui.screens.favourite.FavouriteList
 import com.im.cookgaloreapp.ui.screens.favourite.FavouriteViewModel
 import com.im.cookgaloreapp.ui.theme.Fonts
@@ -41,7 +42,7 @@ fun FavouriteScreen(favouriteViewModel: FavouriteViewModel, favouritesListState:
                     fontFamily = Fonts
                 ),
             )
-            Spacer(modifier = Modifier.padding(4.dp))
+            Spacer(modifier = Modifier.padding(12.dp))
         }
 
 
@@ -59,6 +60,8 @@ fun FavouriteScreen(favouriteViewModel: FavouriteViewModel, favouritesListState:
 
             is ViewState.Loading -> {
 
+                ProgressBar(isEnabled = true)
+
             }
 
             is ViewState.Error -> {
@@ -67,7 +70,7 @@ fun FavouriteScreen(favouriteViewModel: FavouriteViewModel, favouritesListState:
 
             is ViewState.Empty -> {
 
-                Toast.makeText(context, "empty", Toast.LENGTH_LONG).show()
+
 
             }
 

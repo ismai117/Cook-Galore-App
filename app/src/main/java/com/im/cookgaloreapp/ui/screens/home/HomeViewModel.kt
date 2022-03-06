@@ -1,5 +1,6 @@
 package com.im.cookgaloreapp.ui.screens.home
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -33,15 +34,18 @@ constructor(
 
     val query = mutableStateOf("")
 
+    private val _categories: MutableState<List<RecipeCategory>> = mutableStateOf(listOf())
+    val categories: MutableState<List<RecipeCategory>> = _categories
+
     init {
-        viewModelScope.launch {
-            delay(2000)
-        }
+        getRecipeCategories()
     }
 
     fun searchRecipes(query: String){
 
         viewModelScope.launch(Dispatchers.IO) {
+
+            delay(2000)
 
             _recipes.value = ViewState.Loading
 
@@ -66,11 +70,15 @@ constructor(
 
             }
 
-
         }
 
     }
 
+    private fun getRecipeCategories(){
+
+        _categories.value = RecipeCategory.values().toList()
+
+    }
 
     fun insertBookmark(bookmark: Recipes){
         viewModelScope.launch {
@@ -88,4 +96,18 @@ constructor(
     }
 
 
+}
+
+
+
+enum class RecipeCategory(val value: String){
+    CHICKEN("Chicken"),
+    BEEF("Beef"),
+    SOUP("Soup"),
+    DESSERT("Dessert"),
+    VEGETARIAN("Vegetarian"),
+    MILK("Milk"),
+    VEGAN("Vegan"),
+    PIZZA("Pizza"),
+    DONUT("Donut"),
 }

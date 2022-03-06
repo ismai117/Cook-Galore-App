@@ -47,8 +47,8 @@ fun HomeScreen(
 
     val recipes = homeViewModel.recipes.collectAsState().value
     val query = homeViewModel.query.value
+    val categories = homeViewModel.categories.value
     val context = LocalContext.current
-    val titles = listOf("All", "Sushi", "Pizza", "Burger", "Pasta")
     val softKeyboardController = LocalSoftwareKeyboardController.current
     val bookmarked = remember {
         mutableStateOf(false)
@@ -131,8 +131,9 @@ fun HomeScreen(
         OptionsList(
             navController = navController,
             optionsListState = optionsListState,
+            homeViewModel = homeViewModel,
             context = context,
-            titles = titles)
+            titles = categories)
 
         when (recipes) {
 

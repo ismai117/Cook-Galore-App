@@ -19,9 +19,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.im.cookgaloreapp.utils.Screen
+import java.lang.Exception
 
 
 @Composable
@@ -48,7 +50,7 @@ fun BottomNav(
             ) {
 
                 val bottomNavBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = bottomNavBackStackEntry?.destination?.route
+                val currentDestination = bottomNavBackStackEntry?.destination
 
                 navItems.forEach { item ->
 
@@ -59,21 +61,25 @@ fun BottomNav(
                         label = {
                             Text(text = item.title)
                         },
-                        selected = currentRoute == item.route,
+                        selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                         onClick = {
+
                             navController.navigate(item.route) {
-                                navController.graph.startDestinationRoute?.let { screen_route ->
-                                    popUpTo(screen_route) {
-                                        saveState = true
-                                    }
+
+
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
                                 }
                                 launchSingleTop = true
                                 restoreState = true
+
+
                             }
+
                         },
                         selectedContentColor = Color.Black,
                         unselectedContentColor = Color.LightGray,
-                        alwaysShowLabel = true
+                        alwaysShowLabel = true,
                     )
 
                 }

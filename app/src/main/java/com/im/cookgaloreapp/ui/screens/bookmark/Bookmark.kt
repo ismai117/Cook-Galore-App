@@ -50,7 +50,7 @@ fun BookmarkScreen(
                     fontFamily = Fonts
                 ),
             )
-            Spacer(modifier = Modifier.padding(4.dp))
+            Spacer(modifier = Modifier.padding(12.dp))
         }
 
 
@@ -85,7 +85,7 @@ fun BookmarkScreen(
 
             is ViewState.Empty -> {
 
-                Toast.makeText(context, "empty", Toast.LENGTH_LONG).show()
+
 
             }
 
