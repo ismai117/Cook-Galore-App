@@ -38,14 +38,16 @@ constructor(
     val categories: MutableState<List<RecipeCategory>> = _categories
 
     init {
-        getRecipeCategories()
+        viewModelScope.launch {
+            delay(2000)
+            getRecipeCategories()
+        }
     }
 
     fun searchRecipes(query: String){
 
         viewModelScope.launch(Dispatchers.IO) {
 
-            delay(2000)
 
             _recipes.value = ViewState.Loading
 
